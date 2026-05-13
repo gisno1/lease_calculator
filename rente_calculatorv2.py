@@ -41,39 +41,22 @@ if st.button('Bereken'):
         data = []
         huidige_restschuld = lening
 
-        # for maand in range(1, looptijd + 1):
-        #     rente = (huidige_restschuld * (jaar_rente / 100)) / 12
-        #     aflossing = maandlast - rente
-        #     huidige_restschuld -= aflossing
-
-        #     # Zorg dat restschuld niet negatief wordt
-        #     if huidige_restschuld < 0:
-        #         huidige_restschuld = 0
-
-        #     data.append([
-        #                 maand, 
-        #                 f'{maandlast:,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.'),  
-        #                 f'{aflossing:,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.'),  
-        #                 f'{rente:,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.'),  
-        #                 f'{huidige_restschuld:,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.')  
-        #                 ])
-
         for maand in range(1, looptijd + 1):
-            rente = round((huidige_restschuld * (jaar_rente / 100)) / 12, 2)
-            aflossing = round(maandlast - rente, 2)
-            huidige_restschuld = round(huidige_restschuld - aflossing, 2)
+            rente = (huidige_restschuld * (jaar_rente / 100)) / 12
+            aflossing = maandlast - rente
+            huidige_restschuld -= aflossing
 
             # Zorg dat restschuld niet negatief wordt
             if huidige_restschuld < 0:
-                huidige_restschuld = 0.00
+                huidige_restschuld = 0
 
             data.append([
-                maand,
-                f'{maandlast:,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.'),
-                f'{aflossing:,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.'),
-                f'{rente:,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.'),
-                f'{huidige_restschuld:,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.')
-            ])
+                        maand, 
+                        f'{maandlast:,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.'),  
+                        f'{aflossing:,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.'),  
+                        f'{rente:,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.'),  
+                        f'{huidige_restschuld:,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.')  
+                        ])
 
         # Dataframe maken
         df = pd.DataFrame(data, columns=['Periode', 'Leasetermijn (€)', 'Aflossing (€)', 'Rente (€)', 'Restschuld (€)'])
