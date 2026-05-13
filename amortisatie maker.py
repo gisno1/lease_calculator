@@ -77,6 +77,34 @@ if st.button("Bereken"):
         data = []
         huidige_restschuld = lening
 
+        # for p in periods:
+
+        #     if p["periode"] == 1:
+        #         factor = dagen_eerste / totaal_partial if looptijd > 1 else 1
+        #     elif p["periode"] == looptijd:
+        #         factor = dagen_laatste / totaal_partial if looptijd > 1 else 1
+        #     else:
+        #         factor = 1
+
+        #     termijn = maandlast * factor
+
+        #     rente = (huidige_restschuld * (jaar_rente / 100) / 12) * factor
+        #     aflossing = termijn - rente
+
+        #     huidige_restschuld -= aflossing
+        #     if huidige_restschuld < 0:
+        #         huidige_restschuld = 0
+
+        #     data.append([
+        #         p["periode"],
+        #         p["start"],
+        #         p["einde"],
+        #         f"{termijn:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."),
+        #         f"{aflossing:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."),
+        #         f"{rente:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."),
+        #         f"{huidige_restschuld:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        #     ])
+
         for p in periods:
 
             if p["periode"] == 1:
@@ -88,12 +116,23 @@ if st.button("Bereken"):
 
             termijn = maandlast * factor
 
-            rente = (huidige_restschuld * (jaar_rente / 100) / 12) * factor
-            aflossing = termijn - rente
+            # -----------------------------
+            # 1. eerst aflossing schatten
+            # -----------------------------
+            rente_begin = (huidige_restschuld * (jaar_rente / 100) / 12) * factor
+            aflossing = termijn - rente_begin
 
-            huidige_restschuld -= aflossing
-            if huidige_restschuld < 0:
-                huidige_restschuld = 0
+            # update restschuld eerst
+            nieuwe_restschuld = huidige_restschuld - aflossing
+            if nieuwe_restschuld < 0:
+                nieuwe_restschuld = 0
+
+            # -----------------------------
+            # 2. rente over NIEUWE restschuld (jouw eis)
+            # -----------------------------
+            rente = (nieuwe_restschuld * (jaar_rente / 100) / 12) * factor
+
+            huidige_restschuld = nieuwe_restschuld
 
             data.append([
                 p["periode"],
