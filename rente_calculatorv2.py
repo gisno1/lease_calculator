@@ -35,7 +35,6 @@ if st.button('Bereken'):
 
         # Berekening uitvoeren
         maandlast, totale_rente = bereken_totale_rente(lening, jaar_rente, looptijd, restschuld)
-        maandlast = round(maandlast, 2)
 
         # Tabel met aflossingsoverzicht maken
         data = []
